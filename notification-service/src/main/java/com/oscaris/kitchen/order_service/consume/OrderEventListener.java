@@ -1,4 +1,4 @@
-package com.oscaris.kitchen.notification_service.consume;
+package com.oscaris.kitchen.order_service.consume;
 /*
 *
 @author ameda
@@ -6,6 +6,9 @@ package com.oscaris.kitchen.notification_service.consume;
 *
 */
 
+import com.oscaris.kitchen.order_service.payload.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
@@ -16,6 +19,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderEventListener {
 
+    private static  final Logger LOGGER = LoggerFactory.getLogger(OrderEventListener.class);
+
     @Value("${kafka.topic.name}")
     private String topicName;
 
@@ -25,9 +30,10 @@ public class OrderEventListener {
     //😅 3 times then the error can be thrown. 😅
     @RetryableTopic(attempts = "3", backoff = @Backoff(delay = 2000L, maxDelay = 10000L,
     multiplier = 2))
-    public void consume(String order){
-        System.out.println("Received event :: "+order);
-        throw new RuntimeException();
+    public void consume(Order order){
+        LOGGER.info("Message was received:: -> %s ",order.toString());
+        System.out.println(order);
+//        throw new RuntimeException();
         /*
         * just above code added as a way of testing the @Retryables
         * */

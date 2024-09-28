@@ -1,4 +1,4 @@
-package com.oscaris.kitchen.notification_service;
+package com.oscaris.kitchen.order_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

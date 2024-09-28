@@ -1,4 +1,4 @@
-package com.oscaris.kitchen.notification_service;
+package com.oscaris.kitchen.order_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
