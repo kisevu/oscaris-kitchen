@@ -6,30 +6,27 @@ package com.oscaris.kitchen.order_service.payload;
 *
 */
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(name = "tbl_orders")
+@Data
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
     private String orderName;
     private String orderDate;
-
-    public void setOrderId(int orderId){
-        this.orderId = orderId;
-    }
-    public void setOrderName(String orderName){
-        this.orderName = orderName;
-    }
-    public void setOrderDate(String orderDate){
-        this.orderDate = orderDate;
-    }
-    public int getOrderId(){
-        return orderId;
-    }
-    public String getOrderName(){
-        return orderName;
-    }
-    public String getOrderDate(){
-        return orderDate;
-    }
+    private BigDecimal price;
 
     @Override
     public String toString(){

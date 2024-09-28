@@ -39,6 +39,34 @@ services:
       - kafka
     networks:
       - kafka-network
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "3700:3306"
+    networks:
+      - kafka-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: myuser
+      PMA_PASSWORD: mypassword
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - kafka-network
 
 networks:
   kafka-network:
@@ -47,3 +75,4 @@ networks:
 volumes:
   zookeeper-data:
   kafka-data:
+  mysql-data:
