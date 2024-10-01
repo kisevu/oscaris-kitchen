@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: service-registry
+
+server:
+  port: 7900
+
+  #Configure the eureka client
+eureka:
+  client:
+    register-with-eureka: false  # This instance is not a client
+    fetch-registry: false         # This instance does not fetch the registry
+  server:
+    enable-self-preservation: false  # Optional: Disable self-preservation mode

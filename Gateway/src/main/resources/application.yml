@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: Gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: orderModule
+            uri: lb://order-service
+            predicates:
+              - Path=/
+          - id: notificationModule
+            uri: lb://notification-service
+            predicates:
+              - Path=/
+
+server:
+  port: 7575
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7900/eureka/  # URL of the Eureka Server
