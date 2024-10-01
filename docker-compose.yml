@@ -62,11 +62,25 @@ services:
       PMA_USER: myuser
       PMA_PASSWORD: mypassword
     ports:
-      - "8080:80"
+      - "8081:80"
     depends_on:
       - mysql
     networks:
       - oscaris-network
+
+  keycloak:
+    container_name: keycloak-kitchen
+    image: quay.io/keycloak/keycloak:24.0.2
+    ports:
+      - 9090:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: pass
+    networks:
+      - oscaris-network
+    command:
+      - "start-dev"
+
 
 networks:
   oscaris-network:
@@ -76,3 +90,5 @@ volumes:
   zookeeper-data:
   kafka-data:
   mysql-data:
+  keycloak:
+    driver: local
