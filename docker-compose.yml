@@ -7,7 +7,7 @@ services:
     ports:
       - "2181:2181"
     networks:
-      - kafka-network
+      - oscaris-network
     volumes:
       - zookeeper-data:/var/lib/zookeeper
 
@@ -23,7 +23,7 @@ services:
       KAFKA_LISTENERS: INSIDE://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
     networks:
-      - kafka-network
+      - oscaris-network
     volumes:
       - kafka-data:/var/lib/kafka/data
 
@@ -38,19 +38,19 @@ services:
     depends_on:
       - kafka
     networks:
-      - kafka-network
+      - oscaris-network
   mysql:
     image: mysql:5.7
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydatabase
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
+      MYSQL_DATABASE: oscaris
+      MYSQL_USER: root
+      MYSQL_PASSWORD: rootUser@123
     ports:
       - "3700:3306"
     networks:
-      - kafka-network
+      - oscaris-network
     volumes:
       - mysql-data:/var/lib/mysql
 
@@ -66,10 +66,10 @@ services:
     depends_on:
       - mysql
     networks:
-      - kafka-network
+      - oscaris-network
 
 networks:
-  kafka-network:
+  oscaris-network:
     driver: bridge
 
 volumes:

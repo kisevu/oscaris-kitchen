@@ -6,7 +6,10 @@ package com.oscaris.kitchen.order_service.consume;
 *
 */
 
+import com.oscaris.kitchen.order_service.payload.NotificationRequest;
 import com.oscaris.kitchen.order_service.payload.Order;
+import com.oscaris.kitchen.order_service.service.NotificationService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,12 +20,15 @@ import org.springframework.stereotype.Component;
 
 
 @Component
+@RequiredArgsConstructor
 public class OrderEventListener {
 
     private static  final Logger LOGGER = LoggerFactory.getLogger(OrderEventListener.class);
-
     @Value("${kafka.topic.name}")
     private String topicName;
+
+    private final NotificationService notificationService;
+
 
     @KafkaListener(id = "orderEventListener",topics = "my-topic" )
      // 😅when to retry n when delay updated 😅
@@ -31,8 +37,14 @@ public class OrderEventListener {
     @RetryableTopic(attempts = "3", backoff = @Backoff(delay = 2000L, maxDelay = 10000L,
     multiplier = 2))
     public void consume(Order order){
-        LOGGER.info("Message was received:: -> %s ",order.toString());
+
+        NotificationRequest req = NotificationRequest.builder()
+                .message("")
+                .orderItem(order.getOrderName())
+                .build();
+        notificationService.saveNotification(req);
         System.out.println(order);
+
 //        throw new RuntimeException();
         /*
         * just above code added as a way of testing the @Retryables
