@@ -21,39 +21,39 @@ public class SecurityFilter {
 
     private JwtAuthConverter jwtAuthConverter;
 
-//    @Bean
-//    public SecurityFilterChain filter(HttpSecurity httpSecurity) throws Exception{
-//        httpSecurity
-//                .authorizeHttpRequests()
-//                .requestMatchers(HttpMethod.GET,"/api/admin/**").hasRole("admin")
-//                .requestMatchers(HttpMethod.GET,"/api/user/**").hasRole("user")
-//                .anyRequest()
-//                .authenticated();
-//        httpSecurity
-//                .oauth2ResourceServer()
-//                .jwt()
-//                .jwtAuthenticationConverter(jwtAuthConverter);
-//        httpSecurity
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        return httpSecurity.build();
-//    }
-//deprecated
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/api/admin").hasRole("admin")
-                        .requestMatchers(HttpMethod.GET, "/api/user").hasRole("user")
-                        .anyRequest().authenticated()
-                )
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter))
-                )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
-
-        return http.build();
+    public SecurityFilterChain filter(HttpSecurity httpSecurity) throws Exception{
+        httpSecurity
+                .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET,"/api/admin").hasRole("admin")
+                .requestMatchers(HttpMethod.GET,"/api/user").hasRole("user")
+                .anyRequest()
+                .authenticated();
+        httpSecurity
+                .oauth2ResourceServer()
+                .jwt()
+                .jwtAuthenticationConverter(jwtAuthConverter);
+        httpSecurity
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        return httpSecurity.build();
     }
+//deprecated
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers(HttpMethod.GET, "/api/admin").hasRole("admin")
+//                        .requestMatchers(HttpMethod.GET, "/api/user").hasRole("user")
+//                        .anyRequest().authenticated()
+//                )
+//                .oauth2ResourceServer(oauth2 -> oauth2
+//                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter))
+//                )
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                );
+//
+//        return http.build();
+//    }
 }

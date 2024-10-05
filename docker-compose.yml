@@ -80,6 +80,8 @@ services:
       - oscaris-network
     command:
       - "start-dev"
+    volumes:
+      - keycloak-data:/opt/keycloak/data
 
 
 networks:
@@ -90,5 +92,5 @@ volumes:
   zookeeper-data:
   kafka-data:
   mysql-data:
-  keycloak:
+  keycloak-data:
     driver: local
