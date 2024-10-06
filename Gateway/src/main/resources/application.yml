@@ -17,7 +17,6 @@ spring:
             uri: lb://user-management
             predicates:
               - Path=/api/**
-
 server:
   port: 7575
 

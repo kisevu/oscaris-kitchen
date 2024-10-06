@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class KeyCloakController {
 
-    @GetMapping("/getAdminDetails")
+    @GetMapping("/admin")
     public ResponseEntity<String> getAdminDetails(){
         return ResponseEntity.ok("Hello Admin");
     }
 
-    @GetMapping("/getUserDetails")
+    @GetMapping("/user")
     public ResponseEntity<String> getUserDetails(){
         return ResponseEntity.ok("Hello User");
     }
