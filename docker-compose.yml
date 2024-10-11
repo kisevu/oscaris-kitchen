@@ -1,5 +1,4 @@
-version: '3.1'
-
+version: '3'
 services:
   zookeeper:
     image: wurstmeister/zookeeper
@@ -39,58 +38,56 @@ services:
       - kafka
     networks:
       - oscaris-network
-  mysql:
-    image: mysql:5.7
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: oscaris
-      MYSQL_USER: root
-      MYSQL_PASSWORD: rootUser@123
-    ports:
-      - "3700:3306"
-    networks:
-      - oscaris-network
-    volumes:
-      - mysql-data:/var/lib/mysql
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    environment:
-      PMA_HOST: mysql
-      PMA_USER: myuser
-      PMA_PASSWORD: mypassword
+  postgres:
+    image: postgres:latest
+    restart: always
     ports:
-      - "8081:80"
-    depends_on:
-      - mysql
+      - "5432:5432"  # Explicit port mapping
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
     networks:
       - oscaris-network
 
   keycloak:
-    container_name: keycloak-kitchen
     image: quay.io/keycloak/keycloak:24.0.2
+    command: start-dev
+    restart: always
+    links:
+      - postgres
     ports:
-      - 9090:8080
+      - "9082:8080"
     environment:
       KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: pass
+      KEYCLOAK_ADMIN_PASSWORD: admin@1234
+      KC_DB: postgres
+      KC_DB_SCHEMA: public
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: password
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_HOSTNAME: localhost
+      KC_FEATURES: token-exchange,admin-fine-grained-authz
     networks:
       - oscaris-network
-    command:
-      - "start-dev"
-    volumes:
-      - keycloak-data:/opt/keycloak/data
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    networks:
+      - oscaris-network
 
 networks:
   oscaris-network:
-    driver: bridge
 
 volumes:
   zookeeper-data:
   kafka-data:
-  mysql-data:
-  keycloak-data:
-    driver: local

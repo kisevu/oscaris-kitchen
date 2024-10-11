@@ -19,11 +19,13 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9090/realms/Oscaris
+          issuer-uri: http://localhost:9082/realms/Oscaris
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 
 server:
   port: 7171
+  servlet:
+    context-path: /auth
 
 jwt:
   auth:
@@ -36,3 +38,17 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+app:
+  keycloak:
+    admin:
+      clientId: oscaris-keycloak-demo-client
+      clientSecret: tx4UWmfXX3CkS8ymwvt5sH9A4aizUlAS
+    realm: Oscaris
+    serverUrl: http://localhost:9090
+
+
+#for keycloak not to be lost when abruptly terminated
+quarkus:
+  transaction-manager:
+    enable-recovery: true
