@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 public class WebSecurityConfig {
 
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web) -> {
