@@ -3,6 +3,7 @@ package com.oscaris.kitchen.user_management.api;
 import com.oscaris.kitchen.user_management.model.NewUserRecord;
 import com.oscaris.kitchen.user_management.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,12 @@ public class UserAPI {
     public ResponseEntity<?> deleteUser(@PathVariable String id){
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @PutMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestParam String username){
+        userService.forgotPassword(username);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
