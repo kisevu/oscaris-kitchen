@@ -49,12 +49,18 @@ public class UserServiceImpl implements UserService {
         UsersResource usersResource =  getUsersResource();
         Response response = usersResource.create(userRepresentation);
 
-        log.info("Status code: ",response.getStatus());
+        log.info("Status code: "+response.getStatus());
 
         if(Objects.equals(201,response.getStatus())){
 //            throw new RuntimeException("Status code: "+response.getStatus());
         }
         log.info("New user has been created");
+    }
+
+    @Override
+    public void sendVerificationEmail(String userId) {
+        UsersResource usersResource = getUsersResource();
+        usersResource.get(userId).sendVerifyEmail();
     }
 
     private UsersResource getUsersResource(){

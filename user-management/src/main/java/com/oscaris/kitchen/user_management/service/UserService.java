@@ -11,4 +11,5 @@ import com.oscaris.kitchen.user_management.model.NewUserRecord;
 public interface UserService {
 
     void createUser(NewUserRecord newUserRecord);
+    void sendVerificationEmail(String userId);
 }

@@ -84,9 +84,9 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     networks:
       - oscaris-network
-
 networks:
   oscaris-network:
+
 
 volumes:
   zookeeper-data:
