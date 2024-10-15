@@ -32,4 +32,10 @@ public class UserAPI {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id){
+        userService.deleteUser(id);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
 }

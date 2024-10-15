@@ -51,16 +51,31 @@ public class UserServiceImpl implements UserService {
 
         log.info("Status code: "+response.getStatus());
 
-        if(Objects.equals(201,response.getStatus())){
-//            throw new RuntimeException("Status code: "+response.getStatus());
+        if(!Objects.equals(201,response.getStatus())){
+            throw new RuntimeException("Status code: "+response.getStatus());
         }
         log.info("New user has been created");
+        List<UserRepresentation> userRepresentations =
+                usersResource.searchByUsername(newUserRecord.username(), true);
+        UserRepresentation userRepresentation1 = userRepresentations.get(0);
+        sendVerificationEmail(userRepresentation1.getId());
+
+        /*
+        * After a user has been created, a verification email is sent
+        * */
     }
+
 
     @Override
     public void sendVerificationEmail(String userId) {
         UsersResource usersResource = getUsersResource();
         usersResource.get(userId).sendVerifyEmail();
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+        UsersResource usersResource = getUsersResource();
+        usersResource.delete(userId);
     }
 
     private UsersResource getUsersResource(){

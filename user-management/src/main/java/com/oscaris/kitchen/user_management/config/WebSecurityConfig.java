@@ -28,7 +28,8 @@ public class WebSecurityConfig {
             );
             web.ignoring().requestMatchers(
                     HttpMethod.DELETE,
-                    "/public/**"
+                    "/public/**",
+                    "/users/{id}"
             );
             web.ignoring().requestMatchers(
                     HttpMethod.PUT,
