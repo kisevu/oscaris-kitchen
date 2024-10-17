@@ -2,7 +2,7 @@ spring:
   application:
     name: user-management
   jpa:
-    database: keycloak
+    database: POSTGRESQL
     hibernate:
       ddl-auto: update
     show-sql: 'true'
@@ -20,13 +20,12 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:9082/realms/spring
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+          jwk-set-uri: http://localhost:9082/realms/spring/protocol/openid-connect/certs
 
 server:
   port: 7171
   servlet:
     context-path: /auth
-
 jwt:
   auth:
     converter:
@@ -43,12 +42,12 @@ app:
   keycloak:
     admin:
       clientId: spring-app
-      clientSecret: i4SQ5TeM2GBMgXHzxt993DYQn1J6WoCk
+      clientSecret: JPoHtIDzp9tF3hcOQq5LQRBX9C5TyzyI
     realm: spring
     serverUrl: http://localhost:9082
 
 
-#for keycloak not to be lost when abruptly terminated
+#for keycloak data not to be lost when abruptly terminated
 quarkus:
   transaction-manager:
     enable-recovery: true

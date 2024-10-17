@@ -3,7 +3,6 @@ package com.oscaris.kitchen.user_management.api;
 import com.oscaris.kitchen.user_management.model.NewUserRecord;
 import com.oscaris.kitchen.user_management.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +21,9 @@ public class UserAPI {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody NewUserRecord newUserRecord){
+    public ResponseEntity<?> createUser(@RequestBody NewUserRecord newUserRecord) {
         userService.createUser(newUserRecord);
-        return  ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}/send-verification-email")
@@ -43,6 +42,11 @@ public class UserAPI {
     public ResponseEntity<?> forgotPassword(@RequestParam String username){
         userService.forgotPassword(username);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/{userId}/roles")
+    public ResponseEntity<?> getUserRoles(@PathVariable String userId){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserRoles(userId));
     }
 
 }

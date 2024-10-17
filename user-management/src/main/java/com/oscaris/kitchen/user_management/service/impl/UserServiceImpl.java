@@ -15,6 +15,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -56,39 +57,49 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Status code: "+response.getStatus());
         }
         log.info("New user has been created");
+        /*
+        * send verification email to complete account setup
+        * */
         List<UserRepresentation> userRepresentations =
                 usersResource.searchByUsername(newUserRecord.username(), true);
         UserRepresentation userRepresentation1 = userRepresentations.get(0);
         sendVerificationEmail(userRepresentation1.getId());
-
-        /*
-        * After a user has been created, a verification email is sent
-        * */
-    }
-
-
-    @Override
-    public void sendVerificationEmail(String userId) {
-        UsersResource usersResource = getUsersResource();
-        usersResource.get(userId).sendVerifyEmail();
     }
 
     @Override
-    public void deleteUser(String userId) {
+    public void sendVerificationEmail(String id) {
         UsersResource usersResource = getUsersResource();
-        usersResource.delete(userId);
+        usersResource.get(id).sendVerifyEmail();
+    }
+
+    @Override
+    public void deleteUser(String id) {
+        UsersResource usersResource = getUsersResource();
+        usersResource.delete(id);
     }
 
     @Override
     public void forgotPassword(String username) {
         UsersResource usersResource = getUsersResource();
         List<UserRepresentation> userRepresentations =
-                usersResource.searchByUsername(username, true);
+                usersResource.searchByUsername(username,true);
         UserRepresentation userRepresentation1 = userRepresentations.get(0);
         UserResource userResource = usersResource.get(userRepresentation1.getId());
         userResource.executeActionsEmail(List.of("UPDATE_PASSWORD"));
     }
-    private UsersResource getUsersResource(){
+
+    @Override
+    public UserResource getUser(String id) {
+        UsersResource usersResource = getUsersResource();
+        return usersResource.get(id);
+    }
+
+    @Override
+    public List<RoleRepresentation> getUserRoles(String userId) {
+        return getUser(userId).roles().realmLevel().listAll();
+    }
+
+    public UsersResource getUsersResource(){
         return keycloak.realm(realm).users();
     }
 
