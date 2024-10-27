@@ -56,6 +56,24 @@
 
 	<build>
 		<plugins>
+			<!-- Jib Plugin Configuration -->
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<from>
+						<image>eclipse-temurin:17-jre</image> <!-- A Java 17 base image from Docker Hub -->
+					</from>
+					<to>
+						<image>ameda/registry-service</image>
+						<auth>
+							<username>ameda</username>
+							<password>*************************</password>
+						</auth>
+					</to>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

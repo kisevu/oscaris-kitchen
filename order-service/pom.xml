@@ -95,6 +95,24 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<!-- Jib Plugin Configuration -->
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<from>
+						<image>eclipse-temurin:17-jre</image> <!-- A Java 17 base image from Docker Hub -->
+					</from>
+					<to>
+						<image>ameda/order-service</image>
+						<auth>
+							<username>ameda</username>
+							<password>*************************</password>
+						</auth>
+					</to>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
